@@ -184,7 +184,14 @@
         statut: form.statut.value
       };
       await addDoc(collection(db, "actionsLivraison"), action);
-      form.reset();
+      
+form.titre.value = "";
+form.pilote.value = "";
+form.dateDebut.value = "";
+form.dateFin.value = "";
+form.description.value = "";
+form.statut.value = "Non commencé";
+
     });
 
     function render(filtered = "Tous") {
@@ -258,3 +265,4 @@
   </script>
 </body>
 </html>
+
