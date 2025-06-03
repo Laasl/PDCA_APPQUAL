@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>PDCA</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
@@ -263,19 +264,24 @@ form.statut.value = "Non commencé";
         await deleteDoc(doc(db, "actionsLivraison", id));
       }
     };
- import jsPDF from 'https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.es.min.js';
-
 window.exportPDF = () => {
+const { jsPDF } = window.jspdf;
 const doc = new jsPDF();
 let y = 10;
 doc.setFontSize(12);
 actions.forEach(({ data }) => {
+const dateDebut = new Date(data.dateDebut).toLocaleDateString("fr-FR", {
+day: "2-digit", month: "long", year: "numeric"
+});
+const dateFin = new Date(data.dateFin).toLocaleDateString("fr-FR", {
+day: "2-digit", month: "long", year: "numeric"
+});
 const content = `
-Titre: ${data.titre}
-Description: ${data.description}
-Pilote: ${data.pilote}
-Dates: ${data.dateDebut} → ${data.dateFin}
-Statut: ${data.statut}
+Titre : ${data.titre}
+Description : ${data.description}
+Pilote : ${data.pilote}
+Dates : ${dateDebut} → ${dateFin}
+Statut : ${data.statut}
 `;
 doc.text(content.trim(), 10, y);
 y += 40;
