@@ -130,7 +130,8 @@
   </div>
 
   <div id="actionsContainer"></div>
-
+  <button onclick="exportPDF()">📄 Exporter en PDF</button>
+  
   <div class="overlay" id="overlay" onclick="closeModal()"></div>
   <div class="modal" id="modal">
     <form id="editForm">
@@ -262,6 +263,25 @@ form.statut.value = "Non commencé";
         await deleteDoc(doc(db, "actionsLivraison", id));
       }
     };
+ import jsPDF from 'https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.es.min.js';
+
+window.exportPDF = () => {
+const doc = new jsPDF();
+let y = 10;
+doc.setFontSize(12);
+actions.forEach(({ data }) => {
+const content = `
+Titre: ${data.titre}
+Description: ${data.description}
+Pilote: ${data.pilote}
+Dates: ${data.dateDebut} → ${data.dateFin}
+Statut: ${data.statut}
+`;
+doc.text(content.trim(), 10, y);
+y += 40;
+});
+doc.save("actions_pdca.pdf");
+};
   </script>
 </body>
 </html>
